@@ -1,4 +1,5 @@
-﻿using ExemploExplorando.Models;
+﻿using System.Text;
+using ExemploExplorando.Models;
 
 try
 {
@@ -10,7 +11,21 @@ try
     }
 } catch(Exception ex)
 {
-    Console.WriteLine($"Ocorreu uma exceção genérica. {ex.Message}");
+    string error_msg = ($"Ocorreu uma exceção genérica. {ex.Message}");
+
+    string path = @"c:\\Projetos\\dio-csharp\\ExemploExplorando\\Arquivos\\log_" + DateTime.Now.ToString().Replace("/", "-").Replace(" ", "_").Replace(":", "-") + ".txt";
+
+    try
+    {
+        using (FileStream fs = File.Create(path))
+        {
+            byte[] info = new UTF8Encoding(true).GetBytes(error_msg);
+            fs.Write(info, 0, info.Length);
+        }
+    }catch(Exception e){
+        Console.WriteLine(e.Message);
+    }
+    
 }
 
 
